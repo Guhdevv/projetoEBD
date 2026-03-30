@@ -1,15 +1,77 @@
+/* Configurações Gerais */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
     background-color: #f0f2f5;
     color: #333;
+    overflow: hidden; /* Trava o scroll durante o preloader */
 }
 
+/* --- ESTILO DO PRELOADER --- */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1a252f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.preloader-content {
+    text-align: center;
+    color: white;
+}
+
+.fade-text {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+.fade-text.delay {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #3498db;
+    animation-delay: 0.5s;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; transform: translateY(-5px); }
+}
+
+.spinner {
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(255,255,255,0.1);
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    margin: 20px auto;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+#preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* --- INTERFACE DO APP --- */
 header {
     background-color: #2c3e50;
     color: white;
@@ -17,90 +79,83 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
+.logo { font-size: 1.2rem; }
 .logo span { color: #3498db; font-weight: bold; }
 
-/* Ícone Sanduíche */
-.menu-icon {
-    cursor: pointer;
-    width: 30px;
-}
+.menu-icon { width: 25px; cursor: pointer; }
+.bar { height: 3px; width: 100%; background-color: white; margin: 4px 0; border-radius: 2px; }
 
-.bar {
-    height: 3px;
-    width: 100%;
-    background-color: white;
-    margin: 5px 0;
-    border-radius: 2px;
-}
-
-/* Menu de Navegação */
+/* Menu Lateral */
 .nav-overlay {
     height: 100%;
     width: 0;
     position: fixed;
-    z-index: 1000;
     top: 0;
     right: 0;
-    background-color: rgba(44, 62, 80, 0.95);
+    background-color: #2c3e50;
+    z-index: 200;
     overflow-x: hidden;
-    transition: 0.4s;
-    padding-top: 60px;
+    transition: 0.3s;
+    padding-top: 80px;
 }
 
 .nav-overlay ul { list-style: none; text-align: center; }
-.nav-overlay ul li { padding: 15px; }
-.nav-overlay ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.2rem;
-    display: block;
-}
+.nav-overlay li { padding: 15px; }
+.nav-overlay a { color: white; text-decoration: none; font-size: 1.3rem; display: block; }
 
 .close-btn {
     position: absolute;
     top: 20px;
-    right: 30px;
-    font-size: 40px;
+    right: 25px;
+    font-size: 35px;
     color: white;
     cursor: pointer;
 }
 
-/* Conteúdo */
+/* Corpo Principal */
 .hero {
     padding: 40px 20px;
     text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
 }
 
-.welcome h2 { margin-bottom: 10px; color: #2c3e50; }
+.welcome h2 { font-size: 1.8rem; color: #2c3e50; margin-bottom: 5px; }
+.welcome p { color: #7f8c8d; margin-bottom: 30px; }
 
 .button-group {
-    margin-top: 40px;
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
 .main-btn {
-    background-color: #3498db;
-    color: white;
-    border: none;
     padding: 20px;
-    border-radius: 12px;
+    border: none;
+    border-radius: 15px;
     font-size: 1.1rem;
     font-weight: 600;
+    color: white;
+    background-color: #3498db;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
-    transition: transform 0.2s;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
 }
 
-.main-btn:active { transform: scale(0.98); }
+.btn-secondary { background-color: #34495e; }
 
-.btn-secondary { background-color: #7f8c8d; box-shadow: 0 4px 10px rgba(127, 140, 141, 0.3); }
-
-.icon { font-size: 1.4rem; }
+.main-btn:active {
+    transform: scale(0.96);
+    filter: brightness(0.9);
+}
+    
+  
+   
+    
