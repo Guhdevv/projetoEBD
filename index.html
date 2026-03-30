@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+
+      <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>EBD - AD Florida</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -10,24 +11,24 @@
 
     <div id="preloader">
         <div class="preloader-content">
-            <h1>Assembleia de Deus</h1>
-            <h2>Florida</h2>
+            <h1 class="fade-text">Assembleia de Deus</h1>
+            <h2 class="fade-text delay">Florida</h2>
             <div class="spinner"></div>
         </div>
     </div>
 
-    <div id="main-content">
+    <div id="app-content">
         <header>
             <div class="logo">EBD<span>Digital</span></div>
-            <div class="menu-icon" id="openMenu">
+            <div id="openMenu" class="menu-icon">
                 <div class="bar"></div>
                 <div class="bar"></div>
                 <div class="bar"></div>
             </div>
         </header>
 
-        <nav class="nav-overlay" id="navMenu">
-            <span class="close-btn" id="closeMenu">&times;</span>
+        <nav id="navMenu" class="nav-overlay">
+            <span id="closeMenu" class="close-btn">&times;</span>
             <ul>
                 <li><a href="#">Lições</a></li>
                 <li><a href="#">Cronograma</a></li>
@@ -43,16 +44,32 @@
             </div>
 
             <div class="button-group">
-                <button class="main-btn" onclick="askQuestion('lição')">
+                <button class="main-btn" onclick="openModal('lição')">
                     <span class="icon">📖</span>
                     Dúvida sobre a Lição
                 </button>
-                <button class="main-btn btn-secondary" onclick="askQuestion('outro')">
+                <button class="main-btn btn-secondary" onclick="openModal('outro')">
                     <span class="icon">❓</span>
                     Dúvida sobre outro assunto
                 </button>
             </div>
         </main>
+    </div>
+
+    <div id="modal-duvida" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 id="modal-title">Tirar Dúvida</h3>
+            
+            <form action="https://formspree.io/f/gustavoed@rede.ulbra.br" method="POST" id="duvida-form">
+                <input type="text" name="nome" placeholder="Seu nome (Opcional)" class="input-field">
+                <textarea name="mensagem" placeholder="Digite sua dúvida aqui..." required class="textarea-field"></textarea>
+                
+                <input type="hidden" name="_subject" id="email-subject" value="Dúvida EBD">
+                
+                <button type="submit" class="btn-enviar">Enviar Mensagem</button>
+            </form>
+        </div>
     </div>
 
     <script src="script.js"></script>
