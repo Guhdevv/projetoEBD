@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBD App - Escola Bíblica</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">EBD<span>Digital</span></div>
+        <div class="menu-icon" id="openMenu">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </header>
+
+    <nav class="nav-overlay" id="navMenu">
+        <span class="close-btn" id="closeMenu">&times;</span>
+        <ul>
+            <li><a href="#">Lições</a></li>
+            <li><a href="#">Cronograma</a></li>
+            <li><a href="#">Contato</a></li>
+            <li><a href="#">Sugestões de Leitura</a></li>
+        </ul>
+    </nav>
+
+    <main class="hero">
+        <div class="welcome">
+            <h2>Olá, Aluno!</h2>
+            <p>O que você deseja fazer hoje?</p>
+        </div>
+
+        <div class="button-group">
+            <button class="main-btn" onclick="askQuestion('lição')">
+                <span class="icon">📖</span>
+                Dúvida sobre a Lição
+            </button>
+            <button class="main-btn btn-secondary" onclick="askQuestion('outro')">
+                <span class="icon">❓</span>
+                Dúvida sobre outro assunto
+            </button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
