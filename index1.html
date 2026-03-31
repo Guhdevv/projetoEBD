@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>App-EBD</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="preloader">
+          <div class="preloader-content">
+            <p class="fade-text delay-1">A semeadura é dolorosa,</p>
+            <p class="fade-text delay-2">Mas a colheita é prazeroza,</p>
+            <h1 class="fade-text delay-3">Semeai!</h1>
+            </div>
+    </div>
+
+    <div id="app-content">
+        <header>
+            <div class="logo">EBD<span>AD Florida</span></div>
+            <div id="openMenu" class="menu-icon">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </header>
+
+        <nav id="navMenu" class="nav-overlay">
+            <span id="closeMenu" class="close-btn">&times;</span>
+            <ul>
+                <li><a href="https://www.estudantesdabiblia.com.br/cpad_sumario_2026_2t.htm">Lições</a></li>
+                <li><a href="agenda.html">Agenda</a></li>
+                <li><a href="#">Contato</a></li>
+                <li><a href="#">Sugestões de Leitura</a></li>
+                <li><a href="#">...</a></li>
+
+            </ul>
+        </nav>
+
+        <main class="hero">
+            <div class="welcome">
+                <h2>Bem vindo irmão!</h2>
+                <p>"Teve dúvida na lição ou na leitura da Bíblia? Pergunte no app e cresça na graça e no conhecimento!"</p>
+            </div>
+
+            <div class="button-group">
+                <button class="main-btn" onclick="openModal('lição')">
+                    <span class="icon">📖</span>
+                    Dúvida sobre a Lição
+                </button>
+                <button class="main-btn btn-secondary" onclick="openModal('outro')">
+                    <span class="icon">❓</span>
+                    Dúvida sobre outro assunto
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <div id="modal-duvida" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 id="modal-title">Tirar Dúvida</h3>
+            
+            <form action="https://formspree.io/f/gustavoed@rede.ulbra.br" method="POST" id="duvida-form">
+                <input type="text" name="nome" placeholder="Seu nome (Opcional)" class="input-field">
+                <textarea name="mensagem" placeholder="Digite sua dúvida aqui..." required class="textarea-field"></textarea>
+                
+                <input type="hidden" name="_subject" id="email-subject" value="Dúvida EBD">
+                
+                <button type="submit" class="btn-enviar">Enviar Mensagem</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+          
