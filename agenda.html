@@ -6,80 +6,154 @@
     <title>Agenda EBD - AD Florida</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Estilos específicos para o Calendário */
+        /* Estilos específicos para manter o visual de App */
+        :root {
+            --primary-color: #004a8d;
+            --accent-color: #d4af37;
+            --bg-light: #f4f7f6;
+        }
+
         .calendar-container {
             background: white;
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 350px;
-            margin: 0 auto;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 380px;
+            margin: 20px auto;
         }
+
         .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            color: #004a8d;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 1.2rem;
             font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
+
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
+            gap: 8px;
             text-align: center;
         }
-        .day-name { font-weight: bold; font-size: 0.8rem; color: #888; }
-        .day {
-            padding: 10px 0;
-            font-size: 0.9rem;
-            border-radius: 8px;
+
+        .day-name {
+            font-weight: bold;
+            font-size: 0.75rem;
+            color: #888;
+            padding-bottom: 10px;
         }
-        /* Destaque para o dia de aula */
+
+        .day {
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            border-radius: 50%;
+            transition: 0.3s;
+            color: #333;
+        }
+
+        /* DIA DE AULA (ESPECÍFICO) */
         .class-day {
-            background-color: #d4af37;
-            color: white;
+            background-color: var(--accent-color) !important;
+            color: white !important;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(212, 175, 55, 0.4);
+        }
+
+        /* DIA ATUAL */
+        .today {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
             font-weight: bold;
         }
-        .today { border: 2px solid #004a8d; }
-        
+
         .info-aula {
-            margin-top: 20px;
-            background: #eef4f9;
+            width: 90%;
+            max-width: 380px;
+            margin: 10px auto;
+            background: white;
             padding: 15px;
-            border-radius: 10px;
-            border-left: 5px solid #004a8d;
+            border-radius: 15px;
+            border-left: 6px solid var(--accent-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            text-align: left;
         }
-        .info-aula h4 { color: #004a8d; margin-bottom: 5px; }
+
+        .info-aula h4 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .info-aula p {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .back-nav {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            gap: 10px;
+        }
+
+        .btn-voltar {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
+
     <header>
         <div class="logo">EBD<span>Agenda</span></div>
-        <a href="index.html" style="color:white; text-decoration:none;">⬅ Voltar</a>
+        <div id="openMenu" class="menu-icon">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
     </header>
 
+    <nav id="navMenu" class="nav-overlay">
+        <span id="closeMenu" class="close-btn">&times;</span>
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="calendario.html">Agenda de Aulas</a></li>
+            <li><a href="#">Lições</a></li>
+            <li><a href="#">Contato</a></li>
+        </ul>
+    </nav>
+
     <main class="hero">
+        <div class="back-nav">
+            <a href="index.html" class="btn-voltar">⬅ Voltar ao Início</a>
+        </div>
+
         <div class="calendar-container">
-            <div class="calendar-header">
-                <span id="monthName">Março 2024</span>
-            </div>
+            <div class="calendar-header" id="monthName">Mês Atual</div>
             <div class="calendar-grid" id="calendarGrid">
-                <div class="day-name">Dom</div><div class="day-name">Seg</div>
-                <div class="day-name">Ter</div><div class="day-name">Qua</div>
-                <div class="day-name">Qui</div><div class="day-name">Sex</div>
-                <div class="day-name">Sáb</div>
                 </div>
         </div>
 
         <div class="info-aula">
-            <h4> Próxima Aula:</h4>
-            <p id="proximaAulaMsg">Calculando...</p>
+            <h4>📅 Próxima Aula:</h4>
+            <p id="proximaAulaMsg">Carregando informações...</p>
         </div>
     </main>
 
     <script>
+        // --- CONFIGURAÇÃO: COLOQUE AQUI OS DIAS DE AULA DO MÊS ATUAL ---
+        const diasDeAula = [2, 12, 18, 26]; // Exemplo: Aulas em dias alternados
+        // --------------------------------------------------------------
+
         function gerarCalendario() {
             const grid = document.getElementById('calendarGrid');
             const monthText = document.getElementById('monthName');
@@ -88,54 +162,80 @@
             const agora = new Date();
             const ano = agora.getFullYear();
             const mes = agora.getMonth();
-            const hoje = agora.getDate();
+            const hojeData = agora.getDate();
 
             const nomesMeses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
             monthText.innerText = `${nomesMeses[mes]} ${ano}`;
 
-            const primeiroDia = new Date(ano, mes, 1).getDay();
-            const ultimoDia = new Date(ano, mes + 1, 0).getDate();
+            // Gerar cabeçalho dos dias
+            const diasSemana = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+            grid.innerHTML = '';
+            diasSemana.forEach(d => {
+                const el = document.createElement('div');
+                el.className = 'day-name';
+                el.innerText = d;
+                grid.appendChild(el);
+            });
 
-            // Espaços vazios antes do dia 1
-            for (let i = 0; i < primeiroDia; i++) {
-                const empty = document.createElement('div');
-                grid.appendChild(empty);
+            const primeiroDiaSemana = new Date(ano, mes, 1).getDay();
+            const ultimoDiaMes = new Date(ano, mes + 1, 0).getDate();
+
+            // Espaços em branco do mês anterior
+            for (let i = 0; i < primeiroDiaSemana; i++) {
+                grid.appendChild(document.createElement('div'));
             }
 
-            let proximoDomingo = null;
+            let proximaDataEncontrada = null;
 
-            // Gerar dias
-            for (let dia = 1; dia <= ultimoDia; dia++) {
-                const div = document.createElement('div');
-                div.classList.add('day');
-                div.innerText = dia;
+            // Criar os dias do mês
+            for (let dia = 1; dia <= ultimoDiaMes; dia++) {
+                const divDia = document.createElement('div');
+                divDia.className = 'day';
+                divDia.innerText = dia;
 
-                const dataAtualLoop = new Date(ano, mes, dia);
-                const diaSemana = dataAtualLoop.getDay();
-
-                // Destaca Domingos (Dia de Aula)
-                if (diaSemana === 0) { 
-                    div.classList.add('class-day');
-                    if (!proximoDomingo && dia >= hoje) {
-                        proximoDomingo = dia;
+                // Destacar se estiver na lista de dias de aula
+                if (diasDeAula.includes(dia)) {
+                    divDia.classList.add('class-day');
+                    
+                    // Lógica para identificar a próxima aula
+                    if (!proximaDataEncontrada && dia >= hojeData) {
+                        proximaDataEncontrada = dia;
                     }
                 }
 
-                if (dia === hoje) div.classList.add('today');
+                // Destacar o dia de hoje
+                if (dia === hojeData) {
+                    divDia.classList.add('today');
+                }
 
-                grid.appendChild(div);
+                grid.appendChild(divDia);
             }
 
-            // Mensagem da próxima aula
-            if (proximoDomingo) {
-                const frase = proximoDomingo === hoje ? "É hoje! Esperamos por você." : `Será no próximo domingo, dia ${proximoDomingo}.`;
-                msgLink.innerText = frase;
+            // Atualizar mensagem de texto
+            if (proximaDataEncontrada) {
+                if (proximaDataEncontrada === hojeData) {
+                    msgLink.innerText = "Glória a Deus! A aula é HOJE. Esperamos por você!";
+                } else {
+                    msgLink.innerText = `A próxima aula está confirmada para o dia ${proximaDataEncontrada} de ${nomesMeses[mes]}.`;
+                }
             } else {
-                msgLink.innerText = "Verifique com a secretaria da EBD.";
+                msgLink.innerText = "Não há mais aulas agendadas para este mês.";
             }
         }
+
+        // Lógica do Menu (Repetida para funcionar nesta página)
+        const navMenu = document.getElementById('navMenu');
+        const openMenu = document.getElementById('openMenu');
+        const closeMenu = document.getElementById('closeMenu');
+
+        openMenu.onclick = () => navMenu.style.width = "100%";
+        closeMenu.onclick = () => navMenu.style.width = "0";
 
         window.onload = gerarCalendario;
     </script>
 </body>
 </html>
+     
+
+   
+     
