@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Agenda EBD - AD Florida</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilos específicos para o Calendário */
+        .calendar-container {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 350px;
+            margin: 0 auto;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #004a8d;
+            font-weight: bold;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            text-align: center;
+        }
+        .day-name { font-weight: bold; font-size: 0.8rem; color: #888; }
+        .day {
+            padding: 10px 0;
+            font-size: 0.9rem;
+            border-radius: 8px;
+        }
+        /* Destaque para o dia de aula */
+        .class-day {
+            background-color: #d4af37;
+            color: white;
+            font-weight: bold;
+        }
+        .today { border: 2px solid #004a8d; }
+        
+        .info-aula {
+            margin-top: 20px;
+            background: #eef4f9;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 5px solid #004a8d;
+        }
+        .info-aula h4 { color: #004a8d; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">EBD<span>Agenda</span></div>
+        <a href="index.html" style="color:white; text-decoration:none;">⬅ Voltar</a>
+    </header>
+
+    <main class="hero">
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <span id="monthName">Março 2024</span>
+            </div>
+            <div class="calendar-grid" id="calendarGrid">
+                <div class="day-name">Dom</div><div class="day-name">Seg</div>
+                <div class="day-name">Ter</div><div class="day-name">Qua</div>
+                <div class="day-name">Qui</div><div class="day-name">Sex</div>
+                <div class="day-name">Sáb</div>
+                </div>
+        </div>
+
+        <div class="info-aula">
+            <h4> Próxima Aula:</h4>
+            <p id="proximaAulaMsg">Calculando...</p>
+        </div>
+    </main>
+
+    <script>
+        function gerarCalendario() {
+            const grid = document.getElementById('calendarGrid');
+            const monthText = document.getElementById('monthName');
+            const msgLink = document.getElementById('proximaAulaMsg');
+            
+            const agora = new Date();
+            const ano = agora.getFullYear();
+            const mes = agora.getMonth();
+            const hoje = agora.getDate();
+
+            const nomesMeses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+            monthText.innerText = `${nomesMeses[mes]} ${ano}`;
+
+            const primeiroDia = new Date(ano, mes, 1).getDay();
+            const ultimoDia = new Date(ano, mes + 1, 0).getDate();
+
+            // Espaços vazios antes do dia 1
+            for (let i = 0; i < primeiroDia; i++) {
+                const empty = document.createElement('div');
+                grid.appendChild(empty);
+            }
+
+            let proximoDomingo = null;
+
+            // Gerar dias
+            for (let dia = 1; dia <= ultimoDia; dia++) {
+                const div = document.createElement('div');
+                div.classList.add('day');
+                div.innerText = dia;
+
+                const dataAtualLoop = new Date(ano, mes, dia);
+                const diaSemana = dataAtualLoop.getDay();
+
+                // Destaca Domingos (Dia de Aula)
+                if (diaSemana === 0) { 
+                    div.classList.add('class-day');
+                    if (!proximoDomingo && dia >= hoje) {
+                        proximoDomingo = dia;
+                    }
+                }
+
+                if (dia === hoje) div.classList.add('today');
+
+                grid.appendChild(div);
+            }
+
+            // Mensagem da próxima aula
+            if (proximoDomingo) {
+                const frase = proximoDomingo === hoje ? "É hoje! Esperamos por você." : `Será no próximo domingo, dia ${proximoDomingo}.`;
+                msgLink.innerText = frase;
+            } else {
+                msgLink.innerText = "Verifique com a secretaria da EBD.";
+            }
+        }
+
+        window.onload = gerarCalendario;
+    </script>
+</body>
+</html>
