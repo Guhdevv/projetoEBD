@@ -3,126 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Agenda</title>
+    <title>Agenda ebd</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Estilos específicos para manter o visual de App */
-        :root {
-            --primary-color: #004a8d;
-            --accent-color: #d4af37;
-            --bg-light: #f4f7f6;
-        }
+       
+    :root {
+        --primary-color: #004a8d;
+        --accent-color: #d4af37;
+    }
 
-/* Teste */
-        
+    /* Reset para garantir que nada "vaze" para fora da tela */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
+    body, html {
+        width: 100%;
+        height: 100%; /* Base para o cálculo */
+        background-color: #f4f7f6;
+        font-family: 'Segoe UI', sans-serif;
+        overflow-x: hidden;
+    }
 
-.info-aula {
-    margin-bottom: 80px; /* Margem extra abaixo da caixa de mensagem */
+    /* O SEGREDO: Usar min-height e padding flexível */
+    .hero {
+        display: block; /* Mudamos de flex para block para evitar compressão de itens */
+        width: 100%;
+        min-height: 100vh; 
+        padding-top: 80px;    /* Espaço do Header */
+        padding-bottom: 80px; /* ESPAÇO EXTRA NO FUNDO PARA A MENSAGEM NÃO CORTAR */
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .back-nav {
+        margin-bottom: 15px;
+    }
+
+    .btn-voltar {
+        text-decoration: none;
+        color: var(--primary-color);
+        font-weight: bold;
+        font-size: 0.9rem;
+        display: inline-block;
+    }
+
+    .calendar-container {
+        background: white;
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 380px;
+        margin: 0 auto 20px auto; /* Centraliza e dá margem embaixo */
+    }
+
+    .calendar-header {
+        text-align: center;
+        margin-bottom: 15px;
+        color: var(--primary-color);
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+        text-align: center;
+    }
+
+    .day {
+        aspect-ratio: 1 / 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        border-radius: 50%;
+    }
+
+    .class-day {
+        background-color: var(--accent-color) !important;
+        color: white !important;
+        font-weight: bold;
+    }
+
+    .today {
+        border: 2px solid var(--primary-color);
+    }
+
+    /* CAIXA DE MENSAGEM: Ajustada para nunca sumir */
+    .info-aula {
+        width: 100%;
+        max-width: 380px;
+        margin: 0 auto; /* Centraliza horizontalmente */
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        border-left: 6px solid var(--accent-color);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        position: relative; /* Garante que respeite o fluxo do texto */
+    }
+
+    .info-aula h4 {
+        color: var(--primary-color);
+        margin-bottom: 8px;
+    }
+
+    /* Estilo do Header (para garantir que seja fixo mas não atrapalhe) */
+    header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background: var(--primary-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        z-index: 1000;
+    }
+</style>
     
-}
-
-        
-
-/* Teste */
-        
-        .calendar-container {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            width: 90%;
-            max-width: 380px;
-            margin: 20px auto;
-        }
-
-        .calendar-header {
-            text-align: center;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-            text-align: center;
-        }
-
-        .day-name {
-            font-weight: bold;
-            font-size: 0.75rem;
-            color: #888;
-            padding-bottom: 10px;
-        }
-
-        .day {
-            aspect-ratio: 1 / 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            border-radius: 50%;
-            transition: 0.3s;
-            color: #333;
-        }
-
-        /* DIA DE AULA (ESPECÍFICO) */
-        .class-day {
-            background-color: var(--accent-color) !important;
-            color: white !important;
-            font-weight: bold;
-            box-shadow: 0 4px 8px rgba(212, 175, 55, 0.4);
-        }
-
-        /* DIA ATUAL */
-        .today {
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-
-        .info-aula {
-            width: 90%;
-            max-width: 380px;
-            margin: 10px auto;
-            background: white;
-            padding: 15px;
-            border-radius: 15px;
-            border-left: 6px solid var(--accent-color);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            text-align: left;
-        }
-
-        .info-aula h4 {
-            color: var(--primary-color);
-            margin-bottom: 5px;
-            font-size: 1rem;
-        }
-
-        .info-aula p {
-            font-size: 0.9rem;
-            color: #555;
-        }
-
-        .back-nav {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            gap: 10px;
-        }
-
-        .btn-voltar {
-            text-decoration: none;
-            color: var(--primary-color);
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-    </style>
 </head>
 <body>
 
