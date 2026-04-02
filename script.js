@@ -87,7 +87,7 @@ form.onsubmit = async (e) => {
         }
     } catch (error) {
         // Caso algo dê errado (ex: sem internet)
-        button.innerText = "Erro ao enviar!";
+        button.innerText = "Erro, verifique sua conexão!";
         button.style.backgroundColor = "#dc3545";
         button.disabled = false;
     }
