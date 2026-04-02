@@ -80,7 +80,7 @@ form.onsubmit = async (e) => {
                 button.innerText = originalText;
                 button.disabled = false;
                 button.style.backgroundColor = ""; 
-            }, 2000);
+            }, 4000);
 
         } else {
             throw new Error();
