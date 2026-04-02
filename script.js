@@ -1,10 +1,10 @@
-// 1. Controle do Preloader (3 segundos)
+// 1. Controle do Preloader
 window.addEventListener('load', () => {
     setTimeout(() => {
         const preloader = document.getElementById('preloader');
         preloader.classList.add('fade-out');
         document.body.style.overflow = 'auto';
-    }, 3000);
+    }, 5000);
 });
 
 // 2. Controle do Menu Lateral
@@ -41,3 +41,54 @@ closeModal.onclick = () => modal.style.display = "none";
 window.onclick = (event) => {
     if (event.target == modal) modal.style.display = "none";
 }
+
+// 4. ENVIO DO FORMULÁRIO SEM SAIR DA PÁGINA (NOVIDADE)
+const form = document.getElementById('duvida-form');
+
+form.onsubmit = async (e) => {
+    e.preventDefault(); // Impede o redirecionamento para o site do Formspree
+
+    const button = form.querySelector('.btn-enviar');
+    const originalText = button.innerText;
+    
+    // Feedback visual de carregamento
+    button.innerText = "Enviando...";
+    button.disabled = true;
+
+    const formData = new FormData(form);
+
+    try {
+        const response = await fetch(form.action, {
+            method: form.method,
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            // SUCESSO: O que você pediu acontece aqui
+            button.innerText = "Enviado com Sucesso!";
+            button.style.backgroundColor = "#28a745"; // Fica verde
+            form.reset(); // Limpa o texto digitado
+
+            // Espera 2 segundos e fecha o modal automaticamente
+            setTimeout(() => {
+                modal.style.display = "none";
+                
+                // Prepara o botão para a próxima vez que abrir
+                button.innerText = originalText;
+                button.disabled = false;
+                button.style.backgroundColor = ""; 
+            }, 2000);
+
+        } else {
+            throw new Error();
+        }
+    } catch (error) {
+        // Caso algo dê errado (ex: sem internet)
+        button.innerText = "Erro ao enviar!";
+        button.style.backgroundColor = "#dc3545";
+        button.disabled = false;
+    }
+};
